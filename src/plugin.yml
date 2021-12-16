@@ -1,0 +1,7 @@
+name: XcubCore
+main: fr.quinou.xcubcore.Main
+version: 1.0
+author: Quinou
+description: Xcub Core
+website: www.google.fr
+depend: [WorldGuard]

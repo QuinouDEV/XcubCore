@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="XcubCore:jar">
+    <output-path>$USER_HOME$/Desktop/XcubDev/plugins</output-path>
+    <root id="archive" name="XcubCore.jar">
+      <element id="module-output" name="XcubCore" />
+    </root>
+  </artifact>
+</component>

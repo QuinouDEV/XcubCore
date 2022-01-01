@@ -105,14 +105,8 @@ public class SqlPlayerListener
     }
 
 
-    public String getServer(Player p){
-
-        connection = main.getSqlManager().getConnection();
-        if(main.sqlManager.isConnected()){
-            sendPluginMessage("GetServer", p);
-        }
-
-        return "tesdt";
+    public void getServer(Player p){
+        sendPluginMessage("GetServer", p);
     }
 
 

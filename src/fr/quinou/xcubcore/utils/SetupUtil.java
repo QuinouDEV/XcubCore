@@ -1,6 +1,7 @@
 package fr.quinou.xcubcore.utils;
 
 import fr.quinou.xcubcore.Main;
+import fr.quinou.xcubcore.commands.GetServerCommand;
 import fr.quinou.xcubcore.listeners.PluginMessageListener;
 import fr.quinou.xcubcore.events.onPlayerJoin;
 import org.bukkit.plugin.PluginManager;
@@ -15,8 +16,6 @@ public class SetupUtil
     public void mainEnablePluginFunction()
     {
         main.getSqlManager().connection();
-        main.getServer().getMessenger().registerOutgoingPluginChannel(main, "BungeeCord");
-        main.getServer().getMessenger().registerIncomingPluginChannel(main, "BungeeCord", new PluginMessageListener());
         enableListener();
     }
     public void mainDisablePluginFunction()
@@ -27,6 +26,7 @@ public class SetupUtil
     {
         PluginManager pm = getPluginManager();
         pm.registerEvents(new onPlayerJoin(main), main);
+        main.getCommand("getserver").setExecutor(new GetServerCommand(main));
 
     }
     public PluginManager getPluginManager()

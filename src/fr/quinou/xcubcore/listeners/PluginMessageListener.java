@@ -1,41 +1,78 @@
 package fr.quinou.xcubcore.listeners;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import fr.quinou.xcubcore.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.UUID;
+public class PluginMessageListener implements org.bukkit.plugin.messaging.PluginMessageListener {
+    public void onPluginMessageReceived(String channel, Player p, byte[] bytes) {
+        String uuido, playername, uuid, srvname, serverlist[], playerlist[];
+        int playercount;
+        if (!channel.equalsIgnoreCase("BungeeCord")) {
+            return;
+        }
 
-public class PluginMessageListener {
+        ByteArrayDataInput in = ByteStreams.newDataInput(bytes);
+        String subChannel = in.readUTF();
 
+        String server = null;
+        String ip = null;
+        int port = 0;
+        switch (subChannel) {
+            case "IP":
+                ip = in.readUTF();
+                port = in.readInt();
 
-    private Connection connection;
+                Bukkit.broadcastMessage("L'ip est " + ip + "le port est:" + port);
+                return;
+            case "PlayerCount":
+                server = in.readUTF();
+                playercount = in.readInt();
 
-    private Main main;
-    public PluginMessageListener(Main main) {
-        this.main = main;
-    }
+                Bukkit.broadcastMessage("Le Serveur est " + server + "son nombre de joueur est:" + playercount);
+                return;
+            case "PlayerList":
+                server = in.readUTF();
+                playerlist = in.readUTF().split(", ");
 
+                Bukkit.broadcastMessage("Liste des joueurs du serveur: " + server);
+                for (String player : playerlist) {
+                    Bukkit.broadcastMessage(player);
+                }
+                return;
+            case "GetServers":
+                serverlist = in.readUTF().split(", ");
 
+                Bukkit.broadcastMessage("Listes des serveurs: " + serverlist);
+                for (String s : serverlist) {
+                    Bukkit.broadcastMessage(s);
+                }
+                return;
+            case "GetServer":
+                srvname = in.readUTF();
 
+                Bukkit.broadcastMessage("Nom du serv: " + srvname);
+                return;
+            case "UUID":
+                uuid = in.readUTF();
 
-    public void GetServer(Player p){
-        ByteArrayDataOutput output = ByteStreams.newDataOutput();
-        System.out.println("output avant!");
-        output.writeUTF("GetServer");
-        System.out.println("output aprs!");
+                Bukkit.broadcastMessage("UUid is  " + uuid);
+                return;
+            case "UUIDOther":
+                playername = in.readUTF();
+                uuido = in.readUTF();
 
-        p.sendPluginMessage(this.main, "BungeeCord", output.toByteArray());
-        System.out.println("output aprs2!");
+                Bukkit.broadcastMessage("l'UUID de" + playername + "personne est  " + uuido);
+                return;
+            case "ServerIP":
+                server = in.readUTF();
+                ip = in.readUTF();
+                port = in.readUnsignedShort();
+
+                Bukkit.broadcastMessage("Le server demand� est:" + server + ip + port);
+                return;
+        }
+        p.sendMessage("SOus channel inexistant");
     }
 }

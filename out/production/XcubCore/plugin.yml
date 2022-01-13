@@ -5,3 +5,6 @@ author: Quinou
 description: Xcub Core
 website: www.google.fr
 depend: [WorldGuard]
+commands:
+  pm:
+    description: test

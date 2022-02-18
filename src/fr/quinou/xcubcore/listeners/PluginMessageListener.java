@@ -2,13 +2,28 @@ package fr.quinou.xcubcore.listeners;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+import fr.quinou.xcubcore.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.UUID;
+
 public class PluginMessageListener implements org.bukkit.plugin.messaging.PluginMessageListener {
+    private Connection connection;
+    private Main main;
+
+    public PluginMessageListener(Main main){
+        this.main = main;
+    }
+
     public void onPluginMessageReceived(String channel, Player p, byte[] bytes) {
         String uuido, playername, uuid, srvname, serverlist[], playerlist[];
         int playercount;
+
         if (!channel.equalsIgnoreCase("BungeeCord")) {
             return;
         }
@@ -19,6 +34,7 @@ public class PluginMessageListener implements org.bukkit.plugin.messaging.Plugin
         String server = null;
         String ip = null;
         int port = 0;
+
         switch (subChannel) {
             case "IP":
                 ip = in.readUTF();
@@ -51,8 +67,20 @@ public class PluginMessageListener implements org.bukkit.plugin.messaging.Plugin
                 return;
             case "GetServer":
                 srvname = in.readUTF();
+                connection = main.getSqlManager().getConnection();
+                if (this.main.sqlManager.isConnected()) {
+                    try {
+                        UUID uuid2 = p.getUniqueId();
+                        PreparedStatement ps2 = this.connection.prepareStatement("UPDATE players SET Server=? WHERE UUID=?");
+                        ps2.setString(1, srvname);
+                        ps2.setString(2, uuid2.toString());
+                        ps2.executeUpdate();
 
-                Bukkit.broadcastMessage("Nom du serv: " + srvname);
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
                 return;
             case "UUID":
                 uuid = in.readUTF();

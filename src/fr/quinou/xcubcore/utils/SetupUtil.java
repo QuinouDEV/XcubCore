@@ -1,7 +1,10 @@
 package fr.quinou.xcubcore.utils;
 
 import fr.quinou.xcubcore.Main;
-import fr.quinou.xcubcore.commands.CommandPD;
+import fr.quinou.xcubcore.commands.MoneySystem.GetMoney;
+import fr.quinou.xcubcore.commands.MoneySystem.GiveMoney;
+import fr.quinou.xcubcore.commands.MoneySystem.PayCommand;
+import fr.quinou.xcubcore.commands.MoneySystem.SetMoney;
 import fr.quinou.xcubcore.events.onPlayerJoin;
 import org.bukkit.plugin.PluginManager;
 
@@ -22,7 +25,10 @@ public class SetupUtil
     public void enableListener() {
         PluginManager pm = getPluginManager();
         pm.registerEvents(new onPlayerJoin(this.main), this.main);
-        this.main.getCommand("pm").setExecutor(new CommandPD(this.main));
+        main.getCommand("getcoin").setExecutor(new GetMoney(main));
+        main.getCommand("givemoney").setExecutor(new GiveMoney(main));
+        main.getCommand("setmoney").setExecutor(new SetMoney(main));
+        main.getCommand("pay").setExecutor(new PayCommand(main));
     }
 
     public PluginManager getPluginManager() { return this.main.getServer().getPluginManager(); }

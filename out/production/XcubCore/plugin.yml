@@ -4,7 +4,20 @@ version: 1.0
 author: Quinou
 description: Xcub Core
 website: www.google.fr
-depend: [WorldGuard]
 commands:
-  pm:
-    description: test
+  getcoin:
+    description: Voir son argent
+    usage: /<command> <online_player>
+    aliases: test
+  givemoney:
+    description: Give Argent
+    usage: /<command> <online_player>
+    aliases: test
+  setmoney:
+    description: SetSon Argent
+    usage: /<command> <online_player>
+    aliases: test
+  pay:
+    description: Payer des autres
+    usage: /<command> <online_player>
+    aliases: test

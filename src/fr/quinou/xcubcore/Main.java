@@ -21,7 +21,7 @@ public class Main
 
     public void onEnable() {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessageListener());
+        getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessageListener(this));
         this.setupUtil.mainEnablePluginFunction();
         this.sqlPlayerListener.createTable();
         getLogger().info("Plugin activ� !");
